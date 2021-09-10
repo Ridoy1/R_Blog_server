@@ -20,7 +20,24 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const collection = client.db("blog_info").collection("blog_list");
   
+// push 
 
+app.get('/blog', (req, res) => {
+    productsCollection.find()
+    .toArray((err, items) => {
+      res.send(items)
+    })
+  })
+
+  app.post('/addEvent', (req, res) => {
+      const newEvent = req.body;
+      console.log('adding new event', newEvent);
+      productsCollection.insertOne(newEvent)
+      .then(result => {
+          console.log('inserted count', result.insertedCount);
+          res.send(result.insertedCount > 0)
+      })
+  })
 
   // client.close();
 });
